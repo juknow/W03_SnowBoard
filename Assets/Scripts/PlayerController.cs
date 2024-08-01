@@ -14,14 +14,14 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rb;
     public float movementSmoothingSpeed = 1f;
     public float rotationSpeed = 10f;
-    public Camera playerCamera;
+    //public Camera playerCamera;
 
     private bool isOnGround = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         rawInputTurn = new Vector3(inputMovement.x, 0, 0);
         //if (inputMovement.x > 0.01f || inputMovement.x < -0.01f)
         //{
-        //    turnToForward = Quaternion.FromToRotation(Vector3.forward, rawInputTurn); //* transform.rotation;// 0 0 1À» È¸Àü½ÃÅ°´Â ÄõÅÍ´Ï¾ð
+        //    turnToForward = Quaternion.FromToRotation(Vector3.forward, rawInputTurn); //* transform.rotation;// 0 0 1ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½Í´Ï¾ï¿½
         //    //transform.rotation *= turnToForward;
         //}
         Quaternion moveToForward = Quaternion.FromToRotation(Vector3.forward, transform.forward);
@@ -53,11 +53,11 @@ public class PlayerController : MonoBehaviour
 
     void CalculateMovementInputSmoothing()
     {
-        if(rawInputTurn.magnitude > 0.01f)
+        if (rawInputTurn.magnitude > 0.01f)
         {
             Vector3 v = rb.velocity;
             Quaternion turnQuat;
-            if (rawInputTurn.x > 0.01f) // ¿ìÃø
+            if (rawInputTurn.x > 0.01f) // ï¿½ï¿½ï¿½ï¿½
             {
                 turnQuat = Quaternion.FromToRotation(Vector3.forward, new Vector3(Time.unscaledDeltaTime, 0, 1 - Time.unscaledDeltaTime));
                 turnToForward = turnQuat * rb.rotation;
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 v3 = turnQuat * rb.velocity;
                 rb.velocity = Vector3.Slerp(rb.velocity, v3, rotationSpeed * Time.deltaTime);
             }
-            else if (rawInputTurn.x < -0.01f) // ÁÂÃø
+            else if (rawInputTurn.x < -0.01f) // ï¿½ï¿½ï¿½ï¿½
             {
                 turnQuat = Quaternion.FromToRotation(Vector3.forward, new Vector3(-Time.unscaledDeltaTime, 0, 1 - Time.unscaledDeltaTime));
                 turnToForward = turnQuat * rb.rotation;
@@ -76,10 +76,10 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = Vector3.Slerp(rb.velocity, v3, rotationSpeed * Time.deltaTime);
             }
         }
-        
+
         //smoothInputMovement = Vector3.Lerp(smoothInputMovement, realMovement, Time.deltaTime * movementSmoothingSpeed);
         //transform.position += smoothInputMovement;
-        if(isOnGround)
+        if (isOnGround)
             rb.AddForce(realMovement.normalized);
     }
 
@@ -91,13 +91,13 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionStay(Collision collision)
     {
 
-        if(collision.gameObject.CompareTag("Slope"))
+        if (collision.gameObject.CompareTag("Slope"))
         {
             isOnGround = true;
             Vector3 normal = collision.GetContact(0).normal;
             Quaternion targetRotation = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
 
-            // ¹°Ã¼¸¦ °æ»ç¸éÀÇ ¹ý¼±¿¡ ¸Â°Ô È¸Àü
+            // ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Â°ï¿½ È¸ï¿½ï¿½
             rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 10f);
         }
     }
