@@ -26,7 +26,7 @@ namespace StarterAssets
 		public void OnMove(InputValue value)
 		{
 			MoveInput(value.Get<Vector2>());
-			Debug.Log($"Move Input: {move}");
+			//Debug.Log($"Move Input: {move}");
 		}
 
 
@@ -35,7 +35,7 @@ namespace StarterAssets
 			if (cursorInputForLook)
 			{
 				LookInput(context.ReadValue<Vector2>());
-				Debug.Log($"Look Input: {look}");
+				//Debug.Log($"Look Input: {look}");
 			}
 		}
 		/*
